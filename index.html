@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>出海文件下载及工具合集平台（Foreign Trade Tools）</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* 内联样式 - 从style.css转换而来 */
+        :root {
+            --primary-color: #0D9B7D;
+            --secondary-color: #0A7D64;
+            --accent-color: #F8F9FA;
+            --text-color: #333;
+            --link-color: #0056b3;
+            --link-hover-color: #003d7a;
+            --border-color: #ddd;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+            --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            --border-radius: 4px;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--primary-color);
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 3px solid var(--secondary-color);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-info {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .contact-info p {
+            margin: 5px 0;
+            color: white;
+        }
+
+        /* 导航栏样式 */
+        nav {
+            background-color: var(--secondary-color);
+            padding: 10px 0;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color var(--transition-speed);
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        /* 主要内容区域 */
+        main {
+            background-color: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            box-shadow: var(--box-shadow);
+        }
+
+        /* 分类标题 */
+        .category-title {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 15px;
+            margin: 20px 0 15px 0;
+            border-radius: var(--border-radius);
+            font-size: 1.3rem;
+            text-align: center;
+        }
+
+        /* 文件表格样式 */
+        .file-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .file-table th {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .file-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        .file-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .file-table tr:hover {
+            background-color: #e9e9e9;
+        }
+
+        /* 文件卡片网格布局 */
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .file-card {
+            background-color: var(--primary-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: transform var(--transition-speed);
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .file-card-header {
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .file-card-body {
+            padding: 15px;
+            background-color: white;
+            flex-grow: 1;
+        }
+
+        .file-card-footer {
+            padding: 10px 15px;
+            background-color: #f8f9fa;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* 文件图标和信息 */
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .file-name {
+            font-weight: bold;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color var(--transition-speed);
+        }
+
+        .file-name:hover {
+            color: var(--link-color);
+        }
+
+        .file-meta {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .file-size, .file-date, .file-downloads {
+            margin-right: 15px;
+        }
+
+        /* 按钮样式 */
+        .btn {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color var(--transition-speed);
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-download {
+            background-color: var(--success-color);
+        }
+
+        .btn-download:hover {
+            background-color: #218838;
+        }
+
+        .btn-info {
+            background-color: var(--info-color);
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+        }
+
+        /* 平台分类区域 */
+        .platform-section {
+            margin-bottom: 40px;
+        }
+
+        .platform-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 5px;
+        }
+
+        /* 搜索和筛选区域 */
+        .search-filter {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .search-input {
+            flex-grow: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            min-width: 200px;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+        }
+
+        /* 页脚样式 */
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 30px;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .file-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .search-filter {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-input, .filter-select, .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav ul li {
+                margin: 5px 0;
+            }
+        }
+
+        /* 表格布局样式 - 模仿参考网站 */
+        .download-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .download-table td {
+            background-color: var(--primary-color);
+            border: 1px solid #0A7D64;
+            padding: 15px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .download-table a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            padding: 10px;
+        }
+
+        .download-table a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+        }
+
+        .download-table img {
+            max-width: 48px;
+            max-height: 48px;
+            margin-bottom: 10px;
+            display: block;
+            margin: 0 auto 10px auto;
+        }
+
+        .platform-header {
+            background-color: #0A7D64;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-radius: 4px 4px 0 0;
+        }
+
+        .download-section {
+            margin-bottom: 30px;
+        }
+
+        /* 彩色边框 */
+        .border-blue {
+            border: 2px solid #007bff;
+        }
+
+        .border-green {
+            border: 2px solid #28a745;
+        }
+
+        .border-red {
+            border: 2px solid #dc3545;
+        }
+
+        .border-yellow {
+            border: 2px solid #ffc107;
+        }
+
+        .border-purple {
+            border: 2px solid #6f42c1;
+        }
+
+        .border-orange {
+            border: 2px solid #fd7e14;
+        }
+
+        /* 文件类型图标 */
+        .file-type-icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        /* 版本标签 */
+        .version-tag {
+            display: inline-block;
+            background-color: #17a2b8;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>出海文件下载及工具合集平台（Foreign Trade Tools）</h1>
+            <p>为行业内人员提供便捷的文件下载服务和工具调用，不定期更新</p>  
+            <p>也欢迎大家推荐自己用过的确实值得力推的好用的出海相关软件</p> 
+            <div class="contact-info">
+                <p>为防止失联，可通过下面方式联系，看到后会第一时间回复</p>
+                <p>邮箱: chuhaishushi@gmail.com</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#windows">Windows软件</a></li>
+                <li><a href="#mac">Mac软件</a></li>
+                <li><a href="#android">安卓App</a></li>
+                <li><a href="#ios">iOS应用</a></li>
+                <li><a href="#documents">出海魔力工具</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+ 
+            </div>
+
+            <div class="download-section" id="windows">
+                <div class="platform-header">Windows常用软件下载</div>
+                <table class="download-table">
+                    <tr>
+                        <td class="border-blue">
+                            <img src="https://foxitpdfeditor.wordpress.com/wp-content/uploads/2019/02/e9ab98e7baa7pdfe7bc96e8be91e599a8.png?w=150" alt="pdf">
+                            <a href="https://307537.xyz/pdf.exe">完全免费的离线PDF编辑神器 </span></a>
+                        </td>
+                        
+                        <td class="border-green">
+                            <img src="https://b.zol-img.com.cn/soft/6/150/ceUX5FWMx4JvY.png" alt="看图王">
+                            <a href="https://307537.xyz/noads2345pic.exe">2345看图王（无广告）</span></a>
+                        </td>
+                        <td class="border-red">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMa0KmuFJOfeA1V9fUwXLFUGtpqAuETAUtvA&s" alt="解压缩">
+                            <a href="https://307537.xyz/bandizip.exe">无广免费超小解压缩工具 </span></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border-yellow">
+                            <img src="https://dynamic-image.yesky.com/256x256/uploadImages/2021/286/07/UD922B48X55D.jpg" alt="桌面整理">
+                            <a href="https://307537.xyz/deskgo.exe">桌面整理神器，让你的桌面永远清新、干净</span></a>
+                        </td>
+                        <td class="border-purple">
+                            <img src="https://raw.githubusercontent.com/lencx/Noi/main/website/static/readme/noi.png" alt="noi">
+                            <a href="https://307537.xyz/noi.exe">AI跨平台集合应用，一个软件搞定多个AI，支持插件和Prompt管理</span></a>
+                        </td>
+                        <td class="border-orange">
+                            <img src="https://img.utdstc.com/icon/017/297/0172976bb2b9fc5ba749572dd472b343b60ea95bd502540d6d5daed873b30cda:200" alt="clash">
+                            <a href="https://307537.xyz/clash.exe">Windows版上网代理工具clash</span></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="download-section" id="mac">
+                <div class="platform-header">Mac软件下载</div>
+                <table class="download-table">
+                    <tr>
+                        <td class="border-green">
+                            <img src="https://img.utdstc.com/icon/017/297/0172976bb2b9fc5ba749572dd472b343b60ea95bd502540d6d5daed873b30cda:200" alt="ClashX">
+                            <a href="https://307537.xyz/clashx.dmg">MAC苹果电脑上网代理工具ClashX </span></a>
+                        </td>
+                        <td class="border-blue">
+                            <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/bc/d8/0b/bcd80b26-6010-4197-4db6-b57941b2116d/AppIcon-1x_U007emarketing-0-7-0-85-220-0.png/1200x630wa.png" alt="v2rayu">
+                            <a href="https://307537.xyz/v2rayu.dmg">MAC苹果电脑上网代理工具V2rayU</span></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="download-section" id="android">
+                <div class="platform-header">安卓Android手机常用APP下载</div>
+                <table class="download-table">
+                    <tr>
+                        <td class="border-red">
+                            <img src="https://png.pngtree.com/element_our/20190528/ourmid/pngtree-linkedin-free-png-image-image_1144393.jpg" alt="linkedin">
+                            <a href="https://307537.xyz/linkedin.apk">Linkedin，找精准客户最好的社交平台</span></a>
+                        </td>
+                        <td class="border-green">
+                            <img src="https://img.utdstc.com/icon/a9b/fd4/a9bfd4b72b31d50a92d9e6286f4c83933f619db17b4e5582a3322402b4c54ee8:200" alt="Facebook">
+                            <a href="https://307537.xyz/facebook.apk">Facebook，最大的社交平台</span></a>
+                        </td>
+                        <td class="border-red">
+                            <img src="https://scontent.whatsapp.net/v/t39.8562-34/398408474_1008129433826337_172157288163594634_n.png?ccb=1-7&_nc_sid=73b08c&_nc_ohc=38huzPCU-fcQ7kNvgEEMExA&_nc_oc=Adm1h-0ksIUsEdS0hxi1Y1prvUrkYcAtQNM7OsnsPW3ib2yptphLE9COe7Hx1yUIBtY&_nc_zt=3&_nc_ht=scontent.whatsapp.net&_nc_gid=aaFfdVAmpS3hMbJw7qCtZw&oh=01_Q5AaIfIe3CENaEAvxSMFX8smcA1wJCR3wVBkmbx9-rkMM1Mw&oe=67EB3FC4" alt="WhatsApp">
+                            <a href="https://307537.xyz/whatsapp.apk">WhatsApp </span></a>
+                        </td>
+                        <td class="border-red">
+                            <img src="data:image/jpeg;base64,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" alt="WhatsApp商业版">
+                            <a href="https://307537.xyz/whatsappbusiness.apk">WhatsApp商业版 </span></a>
+                        </td>
+                        <td class="border-red">
+                            <img src="https://img.utdstc.com/icon/847/f33/847f33af27bea889ccaa9b1d25135b42ff5bb590297182d0983afb7304d96884:200" alt="Instagram">
+                            <a href="https://307537.xyz/instagram.apk">Instagram</span></a>
+                        </td>
+                        <td class="border-red">
+                            <img src="https://img.utdstc.com/icon/724/b32/724b323eaeb45d27cbc027972516215a0ee3358c6f20840b66474470182e7110:200" alt="gmail">
+                            <a href="https://307537.xyz/gmail.apk">Gmail邮箱</span></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border-purple">
+                            <img src="https://cdn-icons-png.flaticon.com/128/2504/2504941.png" alt="telegram">
+                            <a href="https://307537.xyz/telegram.apk">Telegram </span></a>
+                        </td>
+                        <td class="border-yellow">
+                            <img src="https://img.utdstc.com/icon/138/91d/13891db417fb4a1fab7174ae44b76506cab1910be14ce3fe0870e5d8460919de:200" alt="Telegramx">
+                            <a href="https://307537.xyz/telegramx.apk">Telegram X(注册电报接码曲线救国方案)</span></a>
+                        </td>
+                        <td class="border-orange">
+                            <img src="https://cdn-icons-png.flaticon.com/128/2504/2504953.png" alt="vk">
+                            <a href="https://307537.xyz/vk.apk">俄罗斯第一社交软件VK</span></a>
+                        </td>
+                        <td class="border-purple">
+                            <img src="https://img.utdstc.com/icon/f91/65d/f9165d423e59a3e1aa6d542cdc63f493535aa02e7caa20b17bc3633d2be7b801:200" alt="zalo">
+                            <a href="https://307537.xyz/zalo.apk">越南第一社交软件Zalo </span></a>
+                        </td>
+                        <td class="border-yellow">
+                            <img src="https://img.utdstc.com/icon/d7e/22f/d7e22f6d6996a0157e41e27123e146f4c32551cb8581a5a91a2818c6e8c14409:200" alt="line">
+                            <a href="https://307537.xyz/line.apk">东南亚最流行社交软件Line</span></a>
+                        </td>
+                        <td class="border-orange">
+                            <img src="https://img.utdstc.com/icon/214/6a9/2146a9129bd9efb14667937bc7f8dc216c095c2a18214c8bb1031dd11e8dcce0:200" alt="twitter">
+                            <a href="https://307537.xyz/twitter.apk">X（原推特儿）</span></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border-blue">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9wuEBUjlyjkZnRjZWskPw9pLKAkN0ICCoxf5Ud4kVb9gnAFmQ7CMh7zEX_kQdAgY1Qm8&usqp=CAU" alt="谷歌商店">
+                            <a href="https://307537.xyz/googleplay.apk">谷歌商店，需要魔法环境 </span></a>
+                        </td>
+                        <td class="border-blue">
+                            <img src="https://img.utdstc.com/icon/3c5/13d/3c513d861933b6cb765c3c81293c1a66e27c86e6e26b06b8148045cd3ab18796:200" alt="v2rayng">
+                            <a href="https://307537.xyz/v2rayng.apk">上网代理工具V2 </span></a>
+                        </td>
+                        <td class="border-green">
+                            <img src="https://img.utdstc.com/icon/017/297/0172976bb2b9fc5ba749572dd472b343b60ea95bd502540d6d5daed873b30cda:200" alt="clash">
+                            <a href="https://307537.xyz/clash.apk">上网代理工具Clash</span></a>
+                        </td>
+                        <td class="border-red">
+                            <img src="https://img.utdstc.com/icon/ec4/867/ec48675cf3c0773805d8946df6fca50fee96caec0e280ff9d87170f0e54511b7:200" alt="shadowrocket">
+                            <a href="https://307537.xyz/shadowrocket.apk">安卓版小火箭</span></a>
+                        </td>
+                        <td class="border-red">
+                            <img src="https://www.rultr.com/wp-content/uploads/2021/07/AnXray-logo-rultr.jpg" alt="AnXray">
+                            <a href="https://307537.xyz/anxray.apk">上网代理工具AnXray </span></a>
+                        </td>
+                        <td class="border-red">
+                            <img src="https://avatars.githubusercontent.com/u/30499442?s=200&v=4" alt="ssrr">
+                            <a href="https://307537.xyz/ssrr.apk">上网代理工具粉飞机ssrr</span></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        
+                        <td class="border-green">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaUXa8mt6RrbQRrsjhHXClvbgxilHjnhJZTA&s" alt="frame">
+                            <a href="https://307537.xyz/googleframe.apk">谷歌框架三件套（安卓机型较多，不一定全部适配）</span></a>
+                        </td>
+                        <td class="border-blue">
+                            <img src="https://image.winudf.com/v2/user/admin/YWRtaW5fYXBrcHVyZS1saXRlLWljb24ucG5nXzE1ODQxOTcxOTQ2MTM/icon.webp?w=140&fakeurl=1&type=.webp" alt="apkpure">
+                            <a href="https://307537.xyz/apkpure.apk">谷歌商店平替1，需要魔法环境 </span></a>
+                        </td>
+                        <td class="border-green">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVm6OPlgwGlUDo2gEcTFMZ_QMyrsiTgY2kdA&s" alt="uptodown">
+                            <a href="https://307537.xyz/uptodown.apk">谷歌商店平替2，需要魔法环境</span></a>
+                        </td>
+                        <td class="border-red">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuUn7kCReoe-d6Cq04f91M8RHKHRaOONebbg&s" alt="aro">
+                            <a href="https://307537.xyz/aurora.apk">谷歌商店平替3</span></a>
+                        </td>
+                        <td class="border-red">
+                            <a href=>广告招租位☺</span></a>
+                        </td>
+                        <td class="border-red">
+                            <a href=></span></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="download-section" id="ios">
+                <div class="platform-header">苹果iOS手机应用下载</div>
+                <p style="color: white; text-align: center; margin-bottom: 20px;">（因IOS生态的特殊性，需搞定外区ID登录外区苹果商店才能搞定。以下是整理的几个外区ID渠道）</p>
+                <table class="download-table">
+                    <tr>
+                        <td class="border-red">
+                            <img src="https://buyid.asimple.link/favicon.ico" alt="果子机商号">                
+                            <a href="https://buyid.asimple.link">渠道一：（进入界面输入：5213）</span></a>
+                        </td>
+                        <td class="border-blue">
+                            <img src="https://buyid.asimple.link/assets/cache/images/202308261448145863372.jpg" alt="xiaohuojian8">
+                            <a href="https://psce.pw/huojian">渠道二：（需要科学上网全局才能进入）</span></a>
+                        </td>
+                        <td class="border-green">
+                            <img src="https://helloshudong.com/favicon.ico" alt="shudong">
+                            <a href="http://psce.pw/6ghc7g">渠道三：有点曲线救国：先注册账号买一个月的套餐，就能免费获得外区ID </span></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="download-section">
+                <div class="platform-header">出海必备魔力加持（建议悄悄用，正规用。不要传播）</div>
+                <table class="download-table">
+                    <tr>
+                        <td class="border-blue">
+                            <img src="https://w1.v2free.cc/images/logo.png" alt="PDF">
+                            <a href="https://asimple.link/v2">魔法路径01 </span></a>
+                        </td>
+                        <td class="border-green">
+                            <img src="https://m.ssone.io/assets/cdn/logo2.png" alt="shudong">
+                            <a href=https://m.ssone.io/register?aff=c0q6VyKj>魔法路径02</span></a>
+                        </td>
+                        <td class="border-red">
+                            <img src="data:image/jpeg;base64,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" alt="快连">
+                            <a href="https://asimple.link/fastvpen">魔法路径03</span></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="download-section" id="documents">
+                <div class="platform-header">更多出海动态资料文档，一直在更新迭代，欢迎点击下方"FFT(Foreign Trade Tools )"下载Excel文档存档</div>
+                <table class="download-table">
+                    <tr>
+                        <td class="border-blue">
+                            <img src="https://cdn-icons-png.flaticon.com/128/888/888850.png" alt="FFT">
+                            <a href="https://307537.xyz/ftt700%2B.xlsx">FFT(Foreign Trade Tools ) </span></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+    <footer>
+        <div class="container">
+            <p>Foreign Trade Tools &copy; 2025 版权所有</p>
+            <p>联系: chuhaishushi@gmail.com</p>
+        </div>
+    </footer>
+
+    <script>
+        // 简单的JavaScript功能，可以根据需要添加
+        document.addEventListener('DOMContentLoaded', function() {
+            // 平滑滚动到锚点
+            document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
