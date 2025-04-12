@@ -37,6 +37,7 @@
             background-color: var(--primary-color);
             padding: 0;
             margin: 0;
+            overflow-x: hidden; /* 防止水平滚动 */
         }
 
         .container {
@@ -81,12 +82,14 @@
         nav {
             background-color: var(--secondary-color);
             padding: 10px 0;
+            position: relative; /* 为移动端菜单按钮定位 */
         }
 
         nav ul {
             display: flex;
             justify-content: center;
             list-style: none;
+            flex-wrap: wrap; /* 允许在小屏幕上换行 */
         }
 
         nav ul li {
@@ -98,10 +101,25 @@
             text-decoration: none;
             font-weight: bold;
             transition: color var(--transition-speed);
+            display: block; /* 增加点击区域 */
+            padding: 8px 0; /* 增加点击区域 */
         }
 
         nav ul li a:hover {
             color: var(--accent-color);
+        }
+
+        /* 移动端菜单按钮 */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            position: absolute;
+            right: 20px;
+            top: 10px;
         }
 
         /* 主要内容区域 */
@@ -319,37 +337,12 @@
             margin: 5px 0;
         }
 
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .file-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            }
-            
-            .search-filter {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .search-input, .filter-select, .btn {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-            
-            nav ul {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            nav ul li {
-                margin: 5px 0;
-            }
-        }
-
         /* 表格布局样式 - 模仿参考网站 */
         .download-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            table-layout: fixed; /* 固定表格布局，防止内容撑开 */
         }
 
         .download-table td {
@@ -358,6 +351,7 @@
             padding: 15px;
             text-align: center;
             vertical-align: middle;
+            word-wrap: break-word; /* 允许长文本换行 */
         }
 
         .download-table a {
@@ -436,6 +430,144 @@
             border-radius: 3px;
             font-size: 0.8rem;
             margin-left: 5px;
+        }
+
+        /* 增强的响应式设计 */
+        @media (max-width: 992px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .file-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+            
+            .download-table tr {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            
+            .download-table td {
+                flex: 1 0 50%; /* 每行两个项目 */
+                min-width: 150px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            header p {
+                font-size: 1rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .file-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .search-filter {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-input, .filter-select, .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            /* 导航栏移动端样式 */
+            .menu-toggle {
+                display: block;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                display: none; /* 默认隐藏菜单 */
+            }
+            
+            nav ul.active {
+                display: flex; /* 点击按钮后显示菜单 */
+            }
+            
+            nav ul li {
+                margin: 5px 0;
+                width: 100%;
+                text-align: center;
+            }
+            
+            nav ul li a {
+                padding: 10px 0;
+            }
+            
+            /* 下载表格移动端样式 */
+            .download-table td {
+                flex: 1 0 100%; /* 每行一个项目 */
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .file-grid {
+                grid-template-columns: 1fr; /* 单列布局 */
+            }
+            
+            .download-table img {
+                max-width: 36px;
+                max-height: 36px;
+            }
+            
+            .download-table a {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+        }
+
+        /* 加载动画 */
+        .loader {
+            display: none;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -659,7 +791,7 @@
                     <tr>
                         <td class="border-blue">
                             <img src="https://w1.v2free.cc/images/logo.png" alt="PDF">
-                            <a href="https://asimple.link/v2">魔法路径01 </span></a>
+                            <a href="https://asimple.link/2free">魔法路径01 </span></a>
                         </td>
                         <td class="border-green">
                             <img src="https://m.ssone.io/assets/cdn/logo2.png" alt="shudong">
@@ -687,21 +819,90 @@
 
     <footer>
         <div class="container">
-            <p>Foreign Trade Tools &copy; 2025 版权所有</p>
-            <p>联系: chuhaishushi@gmail.com</p>
+            <p>© 2023-2024 出海文件下载及工具合集平台 - 版权所有</p>
+            <p>联系邮箱: chuhaishushi@gmail.com</p>
         </div>
     </footer>
 
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <div class="loader" id="loader"></div>
+
     <script>
-        // 简单的JavaScript功能，可以根据需要添加
+        // 移动端菜单切换
         document.addEventListener('DOMContentLoaded', function() {
-            // 平滑滚动到锚点
-            document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
+            const menuToggle = document.getElementById('menuToggle');
+            const mainMenu = document.getElementById('mainMenu');
+            
+            if (menuToggle && mainMenu) {
+                menuToggle.addEventListener('click', function() {
+                    mainMenu.classList.toggle('active');
+                });
+                
+                // 点击菜单项后关闭菜单
+                const menuItems = mainMenu.querySelectorAll('a');
+                menuItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        mainMenu.classList.remove('active');
+                    });
+                });
+            }
+            
+            // 返回顶部按钮
+            const backToTopButton = document.getElementById('backToTop');
+            if (backToTopButton) {
+                window.addEventListener('scroll', function() {
+                    if (window.pageYOffset > 300) {
+                        backToTopButton.classList.add('visible');
+                    } else {
+                        backToTopButton.classList.remove('visible');
+                    }
+                });
+                
+                backToTopButton.addEventListener('click', function(e) {
                     e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    window.scrollTo({
+                        top: 0,
                         behavior: 'smooth'
                     });
+                });
+            }
+            
+            // 平滑滚动到锚点
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // 图片加载错误处理
+            document.querySelectorAll('img').forEach(img => {
+                img.addEventListener('error', function() {
+                    this.src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2248%22%20height%3D%2248%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23CCC%22%20d%3D%22M21.9%201.9H2.1C1.5%201.9%201%202.4%201%203v18c0%20.6.5%201.1%201.1%201.1h19.8c.6%200%201.1-.5%201.1-1.1V3c0-.6-.5-1.1-1.1-1.1zM19.6%2020H4.4V4h15.2v16z%22%2F%3E%3Cpath%20fill%3D%22%23CCC%22%20d%3D%22M16.5%2011.4l-3.1-3.1c-.2-.2-.5-.2-.7%200l-3.1%203.1-1.4%201.4c-.2.2-.5.2-.7%200l-1.4-1.4c-.2-.2-.5-.2-.7%200l-2.1%202.1v4.3h15.2v-4.3l-2.1-2.1c-.1-.2-.5-.2-.7%200l-.2.2z%22%2F%3E%3Ccircle%20fill%3D%22%23CCC%22%20cx%3D%229.5%22%20cy%3D%227.5%22%20r%3D%221.5%22%2F%3E%3C%2Fsvg%3E';
+                    this.alt = '图片加载失败';
+                });
+            });
+            
+            // 链接点击加载动画
+            const loader = document.getElementById('loader');
+            document.querySelectorAll('a[href^="https://"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    loader.style.display = 'block';
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                    }, 3000); // 3秒后隐藏加载动画
                 });
             });
         });
